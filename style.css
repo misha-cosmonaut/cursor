@@ -38,8 +38,14 @@ button {
 	margin-bottom: 5px;
 }
 
-.value-row input {
+.planned-values-list, .historical-values-list {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+.value-row input[type="number"], .value-row input[type="date"] {
 	margin-right: 10px;
+	min-width: 120px;
 }
 
 @media print {

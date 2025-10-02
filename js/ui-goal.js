@@ -77,6 +77,20 @@ function addGoal() {
             <input name="currentDate" type="date" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
           </label>
         </div>
+        <!-- Плановые значения -->
+        <div class="plannedValues mb-2">
+          <label class="text-gray-700 font-medium">Плановые значения:
+            <button type="button" class="ml-2 px-2 py-1 bg-blue-200 rounded add-planned-value">+ Добавить</button>
+          </label>
+          <div class="planned-values-list"></div>
+        </div>
+        <!-- Исторические значения -->
+        <div class="historicalValues mb-2">
+          <label class="text-gray-700 font-medium">Исторические значения:
+            <button type="button" class="ml-2 px-2 py-1 bg-green-200 rounded add-historical-value">+ Добавить</button>
+          </label>
+          <div class="historical-values-list"></div>
+        </div>
         <!-- Здесь позже будут критерии и вехи -->
       </div>
     </fieldset>
@@ -88,6 +102,42 @@ function addGoal() {
   goalTabs.push({tabId, contentId});
 
   activateGoalTab(tabId, contentId);
+
+  // Добавляем обработчики для динамических списков плановых и исторических значений
+  setTimeout(() => {
+    // Плановые значения
+    const plannedList = content.querySelector('.planned-values-list');
+    const addPlannedBtn = content.querySelector('.add-planned-value');
+    if (addPlannedBtn && plannedList) {
+      addPlannedBtn.onclick = () => {
+        const row = document.createElement('div');
+        row.className = 'value-row';
+        row.innerHTML = `
+          <input type="number" placeholder="Значение" class="px-2 py-1 border rounded planned-value" />
+          <input type="date" class="px-2 py-1 border rounded planned-date" />
+          <button type="button" class="ml-2 text-red-500 remove-value" title="Удалить">✕</button>
+        `;
+        row.querySelector('.remove-value').onclick = () => row.remove();
+        plannedList.appendChild(row);
+      };
+    }
+    // Исторические значения
+    const historicalList = content.querySelector('.historical-values-list');
+    const addHistoricalBtn = content.querySelector('.add-historical-value');
+    if (addHistoricalBtn && historicalList) {
+      addHistoricalBtn.onclick = () => {
+        const row = document.createElement('div');
+        row.className = 'value-row';
+        row.innerHTML = `
+          <input type="number" placeholder="Значение" class="px-2 py-1 border rounded historical-value" />
+          <input type="date" class="px-2 py-1 border rounded historical-date" />
+          <button type="button" class="ml-2 text-red-500 remove-value" title="Удалить">✕</button>
+        `;
+        row.querySelector('.remove-value').onclick = () => row.remove();
+        historicalList.appendChild(row);
+      };
+    }
+  }, 0);
 }
 
 function activateGoalTab(tabId, contentId) {
