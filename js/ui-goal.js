@@ -42,9 +42,7 @@ function addGoal() {
     <fieldset class="goal rounded-lg border p-4 mb-6">
       <legend class="font-semibold text-lg mb-2">Цель #${goalCounter}</legend>
       <div class="flex flex-col gap-3">
-        <label class="flex flex-col text-gray-700 font-medium">ID цели:
-          <input name="goalId" type="text" value="${autoId}" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
-        </label>
+        <input name="goalId" type="hidden" value="${autoId}" />
         <label class="flex flex-col text-gray-700 font-medium">Название цели:
           <input name="name" type="text" placeholder="Название цели" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
         </label>
