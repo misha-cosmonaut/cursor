@@ -1,0 +1,220 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Report Schema",
+  "type": "object",
+  "properties": {
+    "report": {
+      "type": "object",
+      "title": "Отчёт подразделения",
+      "description": "Единый отчёт о целях, прогрессе, достижениях и вехах подразделения. Используется для генерации презентации с графиками и текстовыми блоками.",
+      "properties": {
+        "reportDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Дата отчёта",
+          "description": "Дата формирования отчёта. Источник: ввод вручную (не импортируется). Используется для маркировки отчёта и построения временной шкалы.",
+          "examples": ["2025-10-02"]
+        },
+        "department": {
+          "type": "string",
+          "title": "Департамент",
+          "description": "Название подразделения. Источник: ввод вручную или импорт. Используется в титульной части презентации.",
+          "examples": ["Sales Department"]
+        },
+        "responsible": {
+          "type": "string",
+          "title": "Ответственный",
+          "description": "ФИО ответственного за отчёт. Источник: ввод вручную (не импортируется). Отображается в титульной части отчёта.",
+          "examples": ["John Doe"]
+        },
+        "goals": {
+          "type": "array",
+          "title": "Цели",
+          "description": "Массив целей подразделения. Каждая цель содержит KPI, прогресс, критерии и используется для построения отдельных страниц отчёта.",
+          "items": { "$ref": "#/definitions/goal" }
+        },
+        "achievements": {
+          "type": "array",
+          "title": "Достижения",
+          "description": "Список значимых достижений, повлиявших на цели или критерии. Источник: ввод вручную или импорт. Отображается в разделе «Достижения» отчёта.",
+          "items": { "$ref": "#/definitions/achievement" }
+        },
+        "milestones": {
+          "type": "array",
+          "title": "Вехи",
+          "description": "Ключевые события (прошлые, текущие или будущие). Источник: ввод вручную или импорт. Используются для отображения на таймлайне.",
+          "items": { "$ref": "#/definitions/milestone" }
+        }
+      },
+      "required": ["reportDate", "department", "responsible", "goals", "achievements", "milestones"]
+    }
+  },
+  "required": ["report"],
+  "definitions": {
+    "goal": {
+      "type": "object",
+      "title": "Цель",
+      "description": "Основная цель подразделения. Содержит KPI, плановые и фактические значения, прогресс и критерии. Каждая цель отображается на отдельной странице презентации.",
+      "properties": {
+        "goalId": {
+          "type": "string",
+          "title": "ID цели",
+          "description": "Уникальный идентификатор цели. Источник: ввод вручную или импорт. Используется для связи с достижениями и вехами.",
+          "examples": ["goal_001"]
+        },
+        "name": {
+          "type": "string",
+          "title": "Название цели",
+          "description": "Краткое название цели. Источник: ввод вручную или импорт. Отображается как заголовок блока цели в отчёте и презентации.",
+          "examples": ["Увеличение выручки"]
+        },
+        "description": {
+          "type": "string",
+          "title": "Описание цели",
+          "description": "Развёрнутое пояснение к цели. Источник: ввод вручную или импорт. Используется для понимания контекста.",
+          "examples": ["Рост дохода подразделения на 20% за квартал"]
+        },
+        "unit": {
+          "type": "string",
+          "title": "Единица измерения",
+          "description": "Формат показателя (₽, %, шт и т.д.). Источник: ввод вручную или импорт. Используется в подписях значений и на графиках.",
+          "examples": ["₽"]
+        },
+        "startValue": {
+          "type": "object",
+          "title": "Начальное значение",
+          "description": "Базовое значение на начало периода. Источник: ввод вручную или импорт. Используется для расчёта прогресса.",
+          "properties": {
+            "value": { "type": "number", "title": "Значение", "examples": [1000000] },
+            "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-01-01"] }
+          },
+          "required": ["value", "date"]
+        },
+        "targetValue": {
+          "type": "object",
+          "title": "Целевое значение",
+          "description": "Желаемое значение показателя к дате. Источник: ввод вручную или импорт. Используется как ориентир на графиках.",
+          "properties": {
+            "value": { "type": "number", "title": "Значение", "examples": [1200000] },
+            "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-03-31"] }
+          },
+          "required": ["value", "date"]
+        },
+        "currentValue": {
+          "type": "object",
+          "title": "Текущее значение",
+          "description": "Фактическое значение на дату отчёта. Источник: ввод вручную (не импортируется). При экспорте сохраняется в JSON и при последующем импорте попадает в historicalValues.",
+          "properties": {
+            "value": { "type": "number", "title": "Значение", "examples": [1100000] },
+            "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-10-02"] }
+          },
+          "required": ["value", "date"]
+        },
+        "plannedValues": {
+          "type": "array",
+          "title": "Плановые значения",
+          "description": "Контрольные точки плана. Источник: ввод вручную или импорт. Используются для построения плановой линии графика.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": { "type": "number", "title": "Значение", "examples": [1050000] },
+              "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-02-01"] }
+            },
+            "required": ["value", "date"]
+          }
+        },
+        "historicalValues": {
+          "type": "array",
+          "title": "Исторические значения",
+          "description": "Фактические значения прошлых периодов. Источник: импорт из предыдущих отчётов (куда currentValue попадает при экспорте) или ручной ввод. Используются для построения фактической линии графика.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": { "type": "number", "title": "Значение", "examples": [1010000] },
+              "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-01-15"] }
+            },
+            "required": ["value", "date"]
+          }
+        },
+        "progress": {
+          "type": "object",
+          "title": "Прогресс",
+          "description": "Вычисляемые показатели прогресса. Источник: расчёт динамически на основе startValue, targetValue, currentValue и historicalValues.",
+          "properties": {
+            "progressTotal": {
+              "type": "number",
+              "title": "Общий прогресс",
+              "description": "current − start",
+              "examples": [100000]
+            },
+            "progressSinceLastHistorical": {
+              "type": "number",
+              "title": "С последнего исторического значения",
+              "description": "current − lastHistorical",
+              "examples": [30000]
+            },
+            "progressTotalPercent": {
+              "type": "number",
+              "title": "Прогресс, %",
+              "description": "((current − start) / (target − start)) × 100",
+              "examples": [55.6]
+            }
+          },
+          "required": ["progressTotal", "progressSinceLastHistorical", "progressTotalPercent"]
+        },
+        "criteria": {
+          "type": "array",
+          "title": "Критерии",
+          "description": "Подцели, структурно идентичные цели. Источник: ввод вручную или импорт (кроме currentValue). Для каждой критерии строится свой мини-график план/факт.",
+          "items": { "$ref": "#/definitions/criteria" }
+        }
+      },
+      "required": ["goalId", "name", "description", "unit", "startValue", "targetValue", "currentValue", "progress"]
+    },
+    "criteria": {
+      "type": "object",
+      "title": "Критерий",
+      "description": "Подцель внутри цели. Имеет ту же структуру, что и цель. Для каждой критерии строится отдельный мини-график план/факт.",
+      "allOf": [{ "$ref": "#/definitions/goal" }],
+      "properties": {
+        "criteriaId": {
+          "type": "string",
+          "title": "ID критерия",
+          "description": "Уникальный идентификатор критерия. Источник: ввод вручную или импорт.",
+          "examples": ["criteria_001"]
+        }
+      },
+      "required": ["criteriaId", "name", "description", "unit", "startValue", "targetValue", "currentValue", "progress"]
+    },
+    "achievement": {
+      "type": "object",
+      "title": "Достижение",
+      "description": "Конкретный результат, повлиявший на цель или критерий. Отображается в блоке «Достижения» отчёта.",
+      "properties": {
+        "achievementId": { "type": "string", "title": "ID достижения", "examples": ["ach_001"] },
+        "name": { "type": "string", "title": "Название", "examples": ["Заключение договора"] },
+        "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-02-10"] },
+        "description": { "type": "string", "title": "Описание", "examples": ["Контракт с корпорацией А"] },
+        "impact": { "type": "string", "title": "Влияние", "examples": ["Повлияло на рост выручки и числа клиентов"] },
+        "relatedGoalId": { "type": "string", "title": "Связанная цель", "examples": ["goal_001"] },
+        "relatedCriterionId": { "type": "string", "title": "Связанный критерий", "examples": ["criteria_001"] }
+      },
+      "required": ["achievementId", "name", "date", "description", "impact", "relatedGoalId", "relatedCriterionId"]
+    },
+    "milestone": {
+      "type": "object",
+      "title": "Веха",
+      "description": "Ключевое событие (прошлое, текущее или будущее). Используется для отображения в таймлайне.",
+      "properties": {
+        "milestoneId": { "type": "string", "title": "ID вехи", "examples": ["ms_001"] },
+        "name": { "type": "string", "title": "Название", "examples": ["Запуск новой линейки услуг"] },
+        "date": { "type": "string", "format": "date", "title": "Дата", "examples": ["2025-02-01"] },
+        "description": { "type": "string", "title": "Описание", "examples": ["Расширение ассортимента"] },
+        "status": { "type": "string", "title": "Статус", "description": "completed | inProgress | planned", "examples": ["completed"] },
+        "relatedGoalId": { "type": ["string", "null"], "title": "Связанная цель", "examples": ["goal_001", null] },
+        "relatedCriterionId": { "type": ["string", "null"], "title": "Связанный критерий", "examples": ["criteria_001", null] }
+      },
+      "required": ["milestoneId", "name", "date", "description", "status"]
+    }
+  }
+}
