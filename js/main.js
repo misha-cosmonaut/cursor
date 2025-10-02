@@ -1,5 +1,3 @@
-let goalCounter = 0;
-
 window.addGoal = addGoal;
 window.addCriterion = addCriterion;
 window.addPlanned = addPlanned;
