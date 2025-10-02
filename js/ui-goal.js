@@ -21,6 +21,7 @@ function ensureTabsUI() {
 function addGoal() {
   ensureTabsUI();
   goalCounter++;
+  const currentGoalNumber = goalTabs.length + 1;
   const autoId = `goal_${goalCounter.toString().padStart(3, '0')}`;
   const tabId = `goalTab_${autoId}`;
   const contentId = `goalContent_${autoId}`;
@@ -30,7 +31,7 @@ function addGoal() {
   tab.className = 'goal-tab px-4 py-2 rounded-t-lg border border-b-0 bg-gray-200 text-gray-700 font-medium hover:bg-blue-100 transition';
   tab.id = tabId;
   tab.type = 'button';
-  tab.innerHTML = `Цель #${goalCounter} <span class="ml-2 text-red-400 cursor-pointer" title="Удалить" onclick="event.stopPropagation(); removeGoalTab('${tabId}', '${contentId}')">✕</span>`;
+  tab.innerHTML = `Цель #${currentGoalNumber} <span class="ml-2 text-red-400 cursor-pointer" title="Удалить" onclick="event.stopPropagation(); removeGoalTab('${tabId}', '${contentId}')">✕</span>`;
   tab.onclick = () => activateGoalTab(tabId, contentId);
 
   // Контент
@@ -40,7 +41,7 @@ function addGoal() {
   content.style.display = 'none';
   content.innerHTML = `
     <fieldset class="goal rounded-lg border p-4 mb-6">
-      <legend class="font-semibold text-lg mb-2">Цель #${goalCounter}</legend>
+      <legend class="font-semibold text-lg mb-2">Цель #${currentGoalNumber}</legend>
       <div class="flex flex-col gap-3">
         <input name="goalId" type="hidden" value="${autoId}" />
         <label class="flex flex-col text-gray-700 font-medium">Название цели:
@@ -107,6 +108,30 @@ function activateGoalTab(tabId, contentId) {
   });
 }
 
+function updateGoalNumbers() {
+  goalTabs.forEach((goalTab, index) => {
+    const goalNumber = index + 1;
+    const tab = document.getElementById(goalTab.tabId);
+    const content = document.getElementById(goalTab.contentId);
+    
+    if (tab) {
+      // Обновить текст вкладки, сохранив кнопку удаления
+      const closeButton = tab.querySelector('span');
+      if (closeButton) {
+        tab.innerHTML = `Цель #${goalNumber} <span class="ml-2 text-red-400 cursor-pointer" title="Удалить" onclick="event.stopPropagation(); removeGoalTab('${goalTab.tabId}', '${goalTab.contentId}')">✕</span>`;
+      }
+    }
+    
+    if (content) {
+      // Обновить заголовок в контенте
+      const legend = content.querySelector('legend');
+      if (legend) {
+        legend.textContent = `Цель #${goalNumber}`;
+      }
+    }
+  });
+}
+
 window.removeGoalTab = function(tabId, contentId) {
   // Удалить вкладку и контент
   const tab = document.getElementById(tabId);
@@ -115,10 +140,11 @@ window.removeGoalTab = function(tabId, contentId) {
   if (content) content.remove();
   // Удалить из массива
   goalTabs = goalTabs.filter(t => t.tabId !== tabId);
+  // Обновить нумерацию оставшихся целей
+  updateGoalNumbers();
   // Активировать соседнюю вкладку
   if (goalTabs.length > 0) {
-    const idx = goalTabs.findIndex(t => t.tabId === tabId);
-    const next = goalTabs[idx] || goalTabs[idx-1] || goalTabs[0];
+    const next = goalTabs[0];
     if (next) activateGoalTab(next.tabId, next.contentId);
   }
 };
