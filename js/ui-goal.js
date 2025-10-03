@@ -91,7 +91,14 @@ function addGoal() {
           </label>
           <div class="historical-values-list"></div>
         </div>
-        <!-- Здесь позже будут критерии и вехи -->
+        <!-- Критерии -->
+        <div class="criteriaContainer mt-4">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-gray-700 font-semibold">Критерии</label>
+            <button type="button" class="px-2 py-1 bg-purple-200 rounded add-criterion">+ Добавить критерий</button>
+          </div>
+          <div class="criteria-list flex flex-col gap-3"></div>
+        </div>
       </div>
     </fieldset>
   `;
@@ -136,6 +143,13 @@ function addGoal() {
         row.querySelector('.remove-value').onclick = () => row.remove();
         historicalList.appendChild(row);
       };
+    }
+
+    // Критерии
+    const criteriaList = content.querySelector('.criteria-list');
+    const addCriterionBtn = content.querySelector('.add-criterion');
+    if (addCriterionBtn && criteriaList) {
+      addCriterionBtn.onclick = () => addCriterionBlock(criteriaList);
     }
   }, 0);
 }
@@ -198,3 +212,103 @@ window.removeGoalTab = function(tabId, contentId) {
     if (next) activateGoalTab(next.tabId, next.contentId);
   }
 };
+
+// Критерии: добавление блока критерия
+function addCriterionBlock(container) {
+  const crit = document.createElement('fieldset');
+  crit.className = 'criterion rounded border p-3';
+  crit.innerHTML = `
+    <div class="flex items-center justify-between">
+      <legend class="font-medium">Критерий</legend>
+      <button type="button" class="text-red-500 remove-criterion" title="Удалить критерий">✕</button>
+    </div>
+    <div class="flex flex-col gap-2 mt-2">
+      <label class="flex flex-col text-gray-700 font-medium">Название:
+        <input name="c_name" type="text" placeholder="Название критерия" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+      </label>
+      <label class="flex flex-col text-gray-700 font-medium">Описание:
+        <input name="c_desc" type="text" placeholder="Описание" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+      </label>
+      <label class="flex flex-col text-gray-700 font-medium">Ед. изм.:
+        <input name="c_unit" type="text" placeholder="₽, %, шт и т.д." class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+      </label>
+      <div class="flex gap-2">
+        <label class="flex flex-col text-gray-700 font-medium flex-1">Начальное значение:
+          <input name="c_startValue" type="number" placeholder="0" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+        </label>
+        <label class="flex flex-col text-gray-700 font-medium flex-1">Дата нач. значения:
+          <input name="c_startDate" type="date" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+        </label>
+      </div>
+      <div class="flex gap-2">
+        <label class="flex flex-col text-gray-700 font-medium flex-1">Целевое значение:
+          <input name="c_targetValue" type="number" placeholder="0" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+        </label>
+        <label class="flex flex-col text-gray-700 font-medium flex-1">Дата целевого значения:
+          <input name="c_targetDate" type="date" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+        </label>
+      </div>
+      <div class="flex gap-2">
+        <label class="flex flex-col text-gray-700 font-medium flex-1">Текущее значение:
+          <input name="c_currentValue" type="number" placeholder="0" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+        </label>
+        <label class="flex flex-col text-gray-700 font-medium flex-1">Дата текущего значения:
+          <input name="c_currentDate" type="date" class="mt-1 px-3 py-2 border border-gray-300 rounded-lg" />
+        </label>
+      </div>
+
+      <!-- Плановые значения критерия -->
+      <div class="c_plannedValues mb-2">
+        <label class="text-gray-700 font-medium">Плановые значения:
+          <button type="button" class="ml-2 px-2 py-1 bg-blue-200 rounded c_add-planned">+ Добавить</button>
+        </label>
+        <div class="c-planned-list"></div>
+      </div>
+      <!-- Исторические значения критерия -->
+      <div class="c_historicalValues mb-2">
+        <label class="text-gray-700 font-medium">Исторические значения:
+          <button type="button" class="ml-2 px-2 py-1 bg-green-200 rounded c_add-historical">+ Добавить</button>
+        </label>
+        <div class="c-historical-list"></div>
+      </div>
+    </div>
+  `;
+
+  // Удаление критерия
+  crit.querySelector('.remove-criterion').onclick = () => crit.remove();
+
+  // Обработчики значений критерия
+  const cPlannedList = crit.querySelector('.c-planned-list');
+  const cAddPlanned = crit.querySelector('.c_add-planned');
+  if (cAddPlanned && cPlannedList) {
+    cAddPlanned.onclick = () => {
+      const row = document.createElement('div');
+      row.className = 'value-row';
+      row.innerHTML = `
+        <input type="number" placeholder="Значение" class="px-2 py-1 border rounded planned-value" />
+        <input type="date" class="px-2 py-1 border rounded planned-date" />
+        <button type="button" class="ml-2 text-red-500 remove-value" title="Удалить">✕</button>
+      `;
+      row.querySelector('.remove-value').onclick = () => row.remove();
+      cPlannedList.appendChild(row);
+    };
+  }
+
+  const cHistoricalList = crit.querySelector('.c-historical-list');
+  const cAddHistorical = crit.querySelector('.c_add-historical');
+  if (cAddHistorical && cHistoricalList) {
+    cAddHistorical.onclick = () => {
+      const row = document.createElement('div');
+      row.className = 'value-row';
+      row.innerHTML = `
+        <input type="number" placeholder="Значение" class="px-2 py-1 border rounded historical-value" />
+        <input type="date" class="px-2 py-1 border rounded historical-date" />
+        <button type="button" class="ml-2 text-red-500 remove-value" title="Удалить">✕</button>
+      `;
+      row.querySelector('.remove-value').onclick = () => row.remove();
+      cHistoricalList.appendChild(row);
+    };
+  }
+
+  container.appendChild(crit);
+}

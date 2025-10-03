@@ -2,13 +2,15 @@
 // container — DOM-элемент, содержащий строки с input'ами (дата и значение)
 // Возвращает массив объектов вида: { date: 'YYYY-MM-DD', value: число }
 function collectValues(container) {
-  // Преобразуем дочерние элементы контейнера в массив и обрабатываем каждый ряд
-  return Array.from(container.children).map(row => {
-    // Извлекаем два input'а: первый — дата, второй — значение
-    const [dateInput, valueInput] = row.querySelectorAll("input");
-    // Формируем объект с датой и числовым значением
-    return { date: dateInput.value, value: Number(valueInput.value) };
-  // Оставляем только те объекты, где дата указана и значение — число
+  // Ищем строки значений по классу, игнорируя заголовки/лейблы
+  const rows = container.querySelectorAll('.value-row');
+  return Array.from(rows).map(row => {
+    // Находим поля по типу или по классам, чтобы не зависеть от порядка
+    const dateInput = row.querySelector("input[type='date'], .planned-date, .historical-date");
+    const valueInput = row.querySelector("input[type='number'], .planned-value, .historical-value");
+    const date = dateInput ? dateInput.value : '';
+    const value = valueInput ? Number(valueInput.value) : NaN;
+    return { date, value };
   }).filter(v => v.date && !isNaN(v.value));
 }
 
