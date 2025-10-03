@@ -79,14 +79,14 @@ function addGoal() {
         </div>
         <!-- Плановые значения -->
         <div class="plannedValues mb-2">
-          <label class="text-gray-700 font-medium">Плановые значения:
+          <label class="text-gray-700 font-medium mb-1 inline-flex items-center gap-2">Плановые значения:
             <button type="button" class="ml-2 px-2 py-1 bg-blue-200 rounded add-planned-value">+ Добавить</button>
           </label>
           <div class="planned-values-list"></div>
         </div>
         <!-- Исторические значения -->
         <div class="historicalValues mb-2">
-          <label class="text-gray-700 font-medium">Исторические значения:
+          <label class="text-gray-700 font-medium mb-1 inline-flex items-center gap-2">Исторические значения:
             <button type="button" class="ml-2 px-2 py-1 bg-green-200 rounded add-historical-value">+ Добавить</button>
           </label>
           <div class="historical-values-list"></div>
@@ -259,14 +259,14 @@ function addCriterionBlock(container) {
 
       <!-- Плановые значения критерия -->
       <div class="c_plannedValues mb-2">
-        <label class="text-gray-700 font-medium">Плановые значения:
+        <label class="text-gray-700 font-medium mb-1 inline-flex items-center gap-2">Плановые значения:
           <button type="button" class="ml-2 px-2 py-1 bg-blue-200 rounded c_add-planned">+ Добавить</button>
         </label>
         <div class="c-planned-list"></div>
       </div>
       <!-- Исторические значения критерия -->
       <div class="c_historicalValues mb-2">
-        <label class="text-gray-700 font-medium">Исторические значения:
+        <label class="text-gray-700 font-medium mb-1 inline-flex items-center gap-2">Исторические значения:
           <button type="button" class="ml-2 px-2 py-1 bg-green-200 rounded c_add-historical">+ Добавить</button>
         </label>
         <div class="c-historical-list"></div>

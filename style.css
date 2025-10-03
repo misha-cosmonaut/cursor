@@ -35,7 +35,9 @@ button {
 .value-row {
 	display: flex;
 	align-items: center;
-	margin-bottom: 5px;
+	gap: 10px;
+	margin-top: 6px;
+	margin-bottom: 6px;
 }
 
 .planned-values-list, .historical-values-list {
@@ -43,9 +45,30 @@ button {
 	margin-bottom: 10px;
 }
 
+/* Отступы и выравнивание для заголовков и кнопок добавления значений */
+.plannedValues label,
+.historicalValues label,
+.c_plannedValues label,
+.c_historicalValues label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+/* Вертикальные отступы между строками значений */
+.planned-values-list,
+.historical-values-list,
+.c-planned-list,
+.c-historical-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
 .value-row input[type="number"], .value-row input[type="date"] {
-	margin-right: 10px;
-	min-width: 120px;
+	margin-right: 0;
+	min-width: 140px;
 }
 
 @media print {
