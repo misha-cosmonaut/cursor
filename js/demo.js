@@ -21,22 +21,41 @@ function runDemo() {
     goalFieldset.querySelector("input[name='currentValue']").value = '110';
     goalFieldset.querySelector("input[name='currentDate']").value = '2025-06-01';
 
-    // Goal planned row
+    // Goal planned rows (4-5 точек в году)
+    const goalPlanPoints = [
+      { value: '102', date: '2025-02-01' },
+      { value: '105', date: '2025-03-01' },
+      { value: '110', date: '2025-05-01' },
+      { value: '115', date: '2025-08-01' },
+      { value: '118', date: '2025-11-01' }
+    ];
     const addPlannedBtn = goalFieldset.querySelector('.add-planned-value');
-    if (addPlannedBtn) addPlannedBtn.click();
-    const gPlannedRow = goalFieldset.querySelector('.planned-values-list .value-row');
-    if (gPlannedRow) {
-      gPlannedRow.querySelector('.planned-value').value = '105';
-      gPlannedRow.querySelector('.planned-date').value = '2025-03-01';
+    if (addPlannedBtn) {
+      goalPlanPoints.forEach(p => {
+        addPlannedBtn.click();
+        const rows = goalFieldset.querySelectorAll('.planned-values-list .value-row');
+        const row = rows[rows.length - 1];
+        row.querySelector('.planned-value').value = p.value;
+        row.querySelector('.planned-date').value = p.date;
+      });
     }
 
-    // Goal historical row
+    // Goal historical rows (4 точки)
+    const goalHistPoints = [
+      { value: '101', date: '2025-01-15' },
+      { value: '103', date: '2025-03-15' },
+      { value: '108', date: '2025-05-15' },
+      { value: '109', date: '2025-07-15' }
+    ];
     const addHistBtn = goalFieldset.querySelector('.add-historical-value');
-    if (addHistBtn) addHistBtn.click();
-    const gHistRow = goalFieldset.querySelector('.historical-values-list .value-row');
-    if (gHistRow) {
-      gHistRow.querySelector('.historical-value').value = '102';
-      gHistRow.querySelector('.historical-date').value = '2025-02-01';
+    if (addHistBtn) {
+      goalHistPoints.forEach(p => {
+        addHistBtn.click();
+        const rows = goalFieldset.querySelectorAll('.historical-values-list .value-row');
+        const row = rows[rows.length - 1];
+        row.querySelector('.historical-value').value = p.value;
+        row.querySelector('.historical-date').value = p.date;
+      });
     }
 
     // Add criterion
@@ -57,22 +76,41 @@ function runDemo() {
         crit.querySelector("input[name='c_currentValue']").value = '1200';
         crit.querySelector("input[name='c_currentDate']").value = '2025-06-01';
 
-        // Criterion planned
+        // Criterion planned rows
+        const cPlanPoints = [
+          { value: '1100', date: '2025-02-01' },
+          { value: '1200', date: '2025-04-01' },
+          { value: '1300', date: '2025-06-01' },
+          { value: '1400', date: '2025-09-01' },
+          { value: '1450', date: '2025-11-01' }
+        ];
         const cAddPlanned = crit.querySelector('.c_add-planned');
-        if (cAddPlanned) cAddPlanned.click();
-        const cPlannedRow = crit.querySelector('.c-planned-list .value-row');
-        if (cPlannedRow) {
-          cPlannedRow.querySelector('.planned-value').value = '1300';
-          cPlannedRow.querySelector('.planned-date').value = '2025-03-01';
+        if (cAddPlanned) {
+          cPlanPoints.forEach(p => {
+            cAddPlanned.click();
+            const rows = crit.querySelectorAll('.c-planned-list .value-row');
+            const row = rows[rows.length - 1];
+            row.querySelector('.planned-value').value = p.value;
+            row.querySelector('.planned-date').value = p.date;
+          });
         }
 
-        // Criterion historical
+        // Criterion historical rows
+        const cHistPoints = [
+          { value: '1050', date: '2025-02-01' },
+          { value: '1120', date: '2025-03-15' },
+          { value: '1180', date: '2025-05-15' },
+          { value: '1190', date: '2025-07-15' }
+        ];
         const cAddHist = crit.querySelector('.c_add-historical');
-        if (cAddHist) cAddHist.click();
-        const cHistRow = crit.querySelector('.c-historical-list .value-row');
-        if (cHistRow) {
-          cHistRow.querySelector('.historical-value').value = '1100';
-          cHistRow.querySelector('.historical-date').value = '2025-02-01';
+        if (cAddHist) {
+          cHistPoints.forEach(p => {
+            cAddHist.click();
+            const rows = crit.querySelectorAll('.c-historical-list .value-row');
+            const row = rows[rows.length - 1];
+            row.querySelector('.historical-value').value = p.value;
+            row.querySelector('.historical-date').value = p.date;
+          });
         }
       }
 
